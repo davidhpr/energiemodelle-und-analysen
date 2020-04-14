@@ -1,0 +1,64 @@
+\documentclass{eegreport}
+
+%% my usepackages
+\usepackage{ltablex}
+\usepackage[official]{eurosym}
+\usepackage{listings}
+%\usepackage{pgfplots} gemeinsam mit matlab2tikz verwenden
+	
+% external files and paths
+\addbibresource{Literature.bib} %% remove, if using BibTeX instead of biblatex
+\graphicspath{{graphics/}}
+
+%% general metadata:
+\newcommand{\mytitle}{VU Energiemodelle und Analysen (373.011)}  %% also used for PDF metadata (hyperref)
+\newcommand{\mysubject}{Protokoll Übung 1}  %% also used for PDF metadata (hyperref)
+\newcommand{\myauthors}{Ivan Grubesic (01425089), Michael Kern (0935115), David Pribic (01428675), Ermin Sefer (01525021)}  %% also used for PDF metadata (hyperref)
+\newcommand{\mysupervisor}{Ao.Univ.Prof. Univ.Prof. Dipl.-Ing. Dr.techn. Haas, Privatdoz. Dipl.-Ing. Dr.techn. Auer, Univ.Ass. Dipl.-Ing. Perger}  %% also used for PDF metadata (hyperref)
+\newcommand{\mydate}{April 2020}  %% also used for PDF metadata (hyperref)
+
+\newcommand{\mykeywords}{KEYWORDS}  %% also used for PDF metadata (hyperref)
+
+%% this information is used only for generating the title page:
+\newcommand{\myuniversity}{TU Wien} %% your university/school
+\newcommand{\myinstitute}{Institut für Energiesysteme und elektrische Antriebe} %% affiliation
+\newcommand{\myworkinggroup}{Energy Economics Group} %% working group
+\newcommand{\mytown}{Wien} %% your home town
+\newcommand{\mymonth}{April} %% month you are handing in
+\newcommand{\myyear}{2020} %% year you are handing in
+
+%% additional information for generic_documentation title page
+\allowdisplaybreaks
+
+
+\begin{document}
+
+
+\mytitlepage
+\pagenumbering{Roman} 
+\tableofcontents 
+\pagenumbering{arabic} 
+
+\newpage
+
+
+\section{1.1 - Modellierung der Wärmenachfrage eines Fernwärmenetzes mittels linearer Regression}
+
+\section{1.2 - Modellierung des Strompreises mittels linearer Regression}
+
+\section{1.3 - Modellansatz für den Kältebedarf eines Gebäudes}
+
+
+
+\newpage
+\appendix
+
+
+\newpage
+%auskommentieren wenn notwendig:
+
+%\listoffigures   
+%\listoftables
+%\printbibliography
+
+\end{document}

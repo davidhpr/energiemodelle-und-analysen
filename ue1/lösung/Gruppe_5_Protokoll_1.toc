@@ -1,0 +1,5 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\babel@toc {ngerman}{}
+\contentsline {section}{\numberline {1}1.1 - Modellierung der Wärmenachfrage eines Fernwärmenetzes mittels linearer Regression}{2}{section.1}%
+\contentsline {section}{\numberline {2}1.2 - Modellierung des Strompreises mittels linearer Regression}{2}{section.2}%
+\contentsline {section}{\numberline {3}1.3 - Modellansatz für den Kältebedarf eines Gebäudes}{2}{section.3}%
