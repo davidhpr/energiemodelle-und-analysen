@@ -53,15 +53,38 @@ title("Lineares Strompreismodell")
 xlabel("Last [MW]")
 ylabel("Preis [€/MWh]")
 legend off
+box off
 
 %Log
+%figure(2)
+%plot(Modell_2,'Color',"#77AC30",'Marker','o','MarkerFaceColor','w')
+%title("Logarithmisches Strompreismodell")
+%xlabel("Last [MW]")
+%ylabel("Preis [€/MWh]")
+%legend off
+
+%log - zürück transformiert
 figure(2)
-plot(Modell_2,'Color',"#77AC30",'Marker','o','MarkerFaceColor','w')
+y = exp(-18.947) .* Netzlast.^2.2529 .*Erneuerbare.^-0.24859;
+scatter(Netzlast,y, 30,'MarkerEdgeColor','#77AC30', 'MarkerFaceColor','w')
+yticks([-20:20:180]);
 title("Logarithmisches Strompreismodell")
 xlabel("Last [MW]")
 ylabel("Preis [€/MWh]")
-legend off
-ylim([0 5.12])
+hold on
+%linear curve fitting y = m*x + b
+nSamples = length(Netzlast);
+X = [ ones(nSamples,1) Netzlast(:)];
+a = (X.'*X)\(X.'*Spotpreis(:));
+b = a(1);
+m = a(2);
+xa = min(Netzlast);
+xb = max(Netzlast);
+x = linspace(xa,xb,100);
+f = b + m*x;
+plot(x,f,'-r');
+hold off
+
 
 %LAG
 figure(3)
@@ -70,6 +93,12 @@ title("LAG Strompreismodell")
 xlabel("Last [MW]")
 ylabel("Preis [€/MWh]")
 legend off
+box OFF
+
+
+
+
+
 
 
 

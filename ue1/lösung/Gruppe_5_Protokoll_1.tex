@@ -38,16 +38,508 @@
 \pagenumbering{Roman} 
 \tableofcontents 
 \pagenumbering{arabic} 
+\pagebreak
+
+
+\section{Modellierung der Wärmenachfrage eines Fernwärmenetzes mittels linearer Regression}
+\subsection{Modell 1}\label{Modell1}
+Für dieses Regressionsmodell wird folgende lineare Gleichung verwendet:
+\begin{equation}\label{Gleichung Modell 1}
+y_t = \beta_0 + \beta_1 \cdot T_t
+\end{equation}
+Wobei die Variablen wie folgt definiert sind:
+\begin{center}
+\parbox{10cm}{
+$y_t$ ... berechneter Nachfragewert zur Stunde t
+
+$\beta_x$ ... x. Regressionskoeffizient
+
+$T_t$ ... tatsächliche Temperatur zur Stunde t}
+\end{center}
+Nach einlesen per \textbf{\emph{readtable()}} und \textbf{\emph{fitlm()}} ergeben sich die Werte für die Koeffizienten wie folgt:
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline 
+ Koeffizient & Estimate & tStat \\ 
+\hline 
+$\beta_0$ & 26.819 & 348.17 \\ 
+\hline 
+$\beta_1$ & -1.1022 & -193.2 \\ 
+\hline 
+\end{tabular} 
+\end{center}
+\caption{Modell 1 - Koeffizienten}
+\label{modell1koeff}
+\end{table}
+
+Bestimmtheitsmaß $R^2$ = 0.81
+
+Dieses Modell ist ein sehr einfaches und hängt nur von 2 Koeffizienten und der Umgebungstemperatur ab. Es werden voraussichtlich, wie später im Scatterplot ersichtlich, große Abweichungen zur tatsächlichen Nachfrage ergeben.
+
+\subsection{Modell 2}
+Für dieses Regressionsmodell wird folgende Gleichung (mit Polynom 3. Grades) verwendet:
+\begin{equation}\label{Gleichung Modell 2}
+y_t = \beta_0 + \beta_1 \cdot T_t + \beta_2 \cdot h_t + \beta_3 \cdot h_t^2 + \beta_4 \cdot h_t^3
+\end{equation}
+
+Wobei die Variablen wie bei Model 1 und zusätzlich wie folgt definiert sind:
+\begin{center}
+\parbox{10cm}{$h_t$ ... die Stunde des aktuellen Berechnungswertes}
+\end{center}
+
+Nach Erweiterung der in Matlab importierten Tabelle um die Spalten \textbf{\emph{Stunde\textasciicircum2}} und \textbf{\emph{Stunde\textasciicircum3}}, können mit dem Befehl \textbf{\emph{fitlm()}} erneut die Werte für die Koeffizienten berechnet werden.
+\newpage
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline 
+ Koeffizient & Estimate & tStat \\ 
+\hline 
+$\beta_0$ & 22.375 & 164.38 \\ 
+\hline 
+$\beta_1$ & -1.1745 & -257.54 \\ 
+\hline 
+$\beta_2$ & 0.21388 & 4.3108 \\ 
+\hline 
+$\beta_3$ & 0.076774 & 15.033 \\ 
+\hline 
+$\beta_4$ & -0.0034922 & -23.898 \\ 
+\hline 
+\end{tabular} 
+\end{center}
+\caption{Modell 2 - Koeffizienten}
+\label{modell2koeff}
+\end{table}
+
+Bestimmtheitsmaß $R^2$ = 0.886
+
+Dieses Modell sollte auf Grund von mehr Parameter schon etwas genauer an den tatsächlichen Nachfragewert herankommen. Dies spiegelt sich auch im größeren (bzw. besseren) Bestimmtheitsmaß wider.
+
+\subsection{Modell 3}
+Für dieses Regressionsmodell wird folgende Gleichung verwendet:
+
+\begin{equation}\label{Gleichung Modell 3}
+y_t = \beta_0 + \beta_1 \cdot T_t + \beta_2 \cdot y_{t-1}
+\end{equation}
+
+Wobei die Variablen wie bei \nameref{Modell1} und zusätzlich wie folgt definiert sind:
+
+\begin{center}
+\parbox{10cm}{$y_{t-1}$ ... tatsächlicher Nachfragewert der vorherigen Stunde t}
+\end{center}
+
+Nach erneuter Erweiterung mit einer\textbf{\emph{ LAG}}-Spalte (tatsächliche Nachfrage-Werte der vorherigen Stunde) wurden folgende Koeffizienten mit dem \textbf{\emph{fitlm()}}-Befehl berechnet.
+\newpage
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline 
+ Koeffizient & Estimate & tStat \\ 
+\hline 
+$\beta_0$ & 24.847 & 247.41 \\ 
+\hline 
+$\beta_1$ & -1.126 & -204.18 \\ 
+\hline 
+$\beta_2$ & 0.19326 & 28.856 \\ 
+\hline 
+\end{tabular} 
+\end{center}
+\caption{Modell 3 - Koeffizienten}
+\label{modell3koeff}
+\end{table}
+
+
+Bestimmtheitsmaß $R^2$ = 0.976
+
+Dieses Modell ist aufgrund der Berücksichtigung der tatsächlichen Nachfrage der vorherigen Stunde sehr genau. Das kann man auch am hohen Bestimmtheitsmaß erkennen.
+Es sollte, bei moderater Temperaturänderung, keine große Abweichung der berechneten zur tatsächlichen Nachfrage geben. 
+
+
+
+\subsection{Modell 1-3 – Unterpunkt c}
+Wie in der \ref{fig:aufgabecwinter} folgenden Abbildung zu sehen ist, sind zwei unterschiedliche Wochen zu sehen. Eine im Winter für den Zeitraum 07.01.2008 0 Uhr bis 13.01.2008 23 Uhr und jene im Sommer im Zeitraum 28.06.2008 0 Uhr bis 04.07.2008 23 Uhr.
+\newpage
+\myfig{Aufgabe_c_-_Wochenübersicht_Winter.png}
+{width=0.95\textwidth}
+{Modellvergleich Winterwoche}
+{Modellvergleich Winterwoche}
+{aufgabecwinter}
+{!htb}
+\newpage
+\myfig{Aufgabe_c_-_Wochenübersicht_Sommer.png}
+{width=0.95\textwidth}
+{Modellvergleich Sommerwoche}
+{Modellvergleich Sommerwoche}
+{aufgabecsommer}
+{!htb}
+
+
+
+Es ist erkennbar, dass die Modelle 1 \& 2 sowohl in den kalten, als auch in den warmen Jahreszeiten nicht gut genug den realen Nachfragewerten folgen können. Eine erhöhte Unsicherheit ergibt sich bei allen Modellen im Sommer. 
+Der Grund, warum die Modelle bei geringerer Temperatur im Vergleich zu höheren weitaus genauer sind, dürfte wohl daran liegen, dass der Hauptteil unseres Datensatzes um die Durchschnittstemperatur von 10,5°C liegt. Daraus folgend wurden die Modelle zum Großteil eher um diesen Temperaturbereich angepasst.
+In der Abbildung "Modellvergleich Winterwoche" ist ersichtlich, dass unser erweitertes Modell 2 den Tageszeitabhängigen Verlauf in der Kalten Jahreszeit besser darstellt als das Modell 1. Im Sommer ergeben sich dagegen nur minimale Unterschiede.
+
+Das dritte Modell folgt in den Wintermonaten sehr gut den realen Nachfragewerten, im Sommer jedoch sind wiederrum deutliche Abweichungen erkennbar.
+
+\subsection{Modell 1-3 – Punkt d}
+Nachfolgend sind die Scatterplots der 3 Modelle (Nachfrage über Temperatur) dargestellt.
+\newpage
+\myfig{Aufgabe_d.png}
+{width=0.95\textwidth}
+{Scatterplots Modellvergleich – Nachfrage über Temperatur}
+{Scatterplots Modellvergleich – Nachfrage über Temperatur}
+{aufgabed}
+{!htb}
+
+Wie man in den Modellen 1 und 2 erkennen kann, ergeben sich erhebliche Abweichungen ab höheren Temperaturen (ab ca. 20°C), da hier die Nachfrage nicht mehr anhand einer Geraden beschrieben werden kann. Bei beiden Modellen ergeben sich unrealistische Negativ-Nachfragewerte.
+
+
+\subsection{Modell 4}
+\subsubsection{Punkt a}
+
+In der folgenden Tabelle sind die Werte für $\beta_0$ und $\beta_1$ für die einzelnen Stunden des gesamten Jahres durch lineare Regression berechnet. Hierzu wurde wieder der Befehl \textbf{\emph{fitlm()}} mit Matlab verwendet.
+
+\begin{equation}\label{Gleichung Modell 3}
+y_t^j = \beta_0 + \beta_1 \cdot T_t^j
+\end{equation}
+\newpage
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline 
+Stunde  & $\beta_0$ & $\beta_1$ \\ 
+\hline 
+0 & 21.498 & -0.994 \\ 
+\hline 
+1 & 21.284 & -1.018 \\ 
+\hline 
+2 & 21.501 & -1.058 \\ 
+\hline 
+3 & 21.810 & -1.096 \\ 
+\hline 
+4 & 22.638 & -1.160 \\ 
+\hline 
+5 & 24.948 & 1.288 \\ 
+\hline 
+6 & 30.313 & -1.565 \\ 
+\hline 
+7 & 32.513 & -1.658 \\ 
+\hline 
+8 & 32.195 & -1.589 \\ 
+\hline 
+9 & 31.499 & -1.486 \\ 
+\hline 
+10 & 30.337 & -1.358 \\ 
+\hline 
+11 & 29.442 & -1.255 \\ 
+\hline 
+12 & 28.807 & -1.172 \\ 
+\hline 
+13 & 28.559 & -1.109 \\ 
+\hline 
+14 & 28.573 & -1.073 \\ 
+\hline 
+15 & 28.753 & -1.054 \\ 
+\hline 
+16 & 29.235 & -1.058 \\ 
+\hline 
+17 & 29.973 & -1.080 \\ 
+\hline 
+18 & 30.320 & -1.090 \\ 
+\hline 
+19 & 29.756 & -1.076 \\ 
+\hline 
+20 & 29.241 & -1.095 \\ 
+\hline 
+21 & 28.556 & -1.127 \\ 
+\hline 
+22 & 26.778 & -1.128 \\ 
+\hline 
+23 & 22.009 & -0.962 \\ 
+\hline 
+\end{tabular} 
+\end{center}
+\caption{Modell 4 - einzelne Stunden - Koeffizienten}
+\label{tab4a}
+\end{table}
 
 \newpage
+\myfig{Aufgabe_1.4_a.png}
+{width=0.95\textwidth}
+{Koeffizientenvergleich über Stunden}
+{Koeffizientenvergleich über Stunden}
+{aufgabe1.4a}
+{!htb}
+
+\subsubsection{Punkt b}
+Nachdem die Nachfrage bei Stunde 7 höher ist als bei Stunde 1 ist, ist zu erwarten das $\beta_0$ für den ersteren Fall größer ist.
+
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline 
+Stunde  & $\beta_0$ & $\beta_1$ \\ 
+\hline 
+1 & 21.284 & -1.018 \\ 
+\hline 
+7 & 32.513 & -1.658 \\ 
+\hline 
+\end{tabular} 
+\end{center}
+\caption{Modell 4 - Punkt b - Koeffizientenwerte}
+\label{tab4b}
+\end{table}
+
+\subsubsection{Punkt c}
+In diesem Unterpunkt sollen die Bestimmtheitsmaße der beiden Modelle der Stunden mit jenen der vorigen Modelle verglichen werden.
+
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline 
+ & Modell 1 & Modell 2 & Modell 3 & Stunde 7 & Stunde 1 \\ 
+\hline 
+$R^{2}$ & 0.81 & 0.886 & 0.976 & 0.912 & 0.924 \\ 
+\hline 
+\end{tabular} 
+\end{center}
+\caption{Modell 4 - Punkt c - Bestimmtheitsmaße}
+\label{taba}
+\end{table}
+
+Da sich die linearen Regressions-Modelle für Stunde 1 und 7 nur auf diese Stunden beziehen, werden die berechneten Nachfragewerte im Mittel weniger von den tatsächlichen Nachfragewerten abweichen als in den Modellen 1 und 2, welche sich auf alle Stunden eines Tages beziehen. 
+
+Jedoch berücksichtigen sie ebenfalls nicht die Nachfragewerte der vorherigen Stunde, wodurch auch diese Modelle nicht so genau wie das Modell 3 sind.
+
+\newpage
+\subsubsection{Punkt d}
+
+\myfig{Aufgabe_1.4_d.png}
+{width=0.95\textwidth}
+{Koeffizientenvergleich über Stunden}
+{Koeffizientenvergleich über Stunden}
+{aufgabe1.4a}
+{!htb}
+
+Man erkennt, dass die Nachfrage zwischen Anfang September und Mitte Dezember, im Vergleich zum restlichen Jahr, konstant niedrig ist. Genau zu dieser Zeit weichen die berechneten Nachfragewerte auch sehr stark von den historischen Werten ab.
+
+Vermutlich liegt das daran, dass die Gebäudetemperaturen sehr träge sind und erst eine gewisse Zeit benötigen, bis diese auf Temperatur sind und man daher nicht mehr heizen muss. Im Vergleich dazu kühlen die Gebäude erst Mitte Dezember stark aus und der Heizbedarf steigt. 
+
+Die berechneten Nachfragewerte weichen vermutlich deswegen stark von den historischen Werten ab, da das Modell auf eher fluktuierende Nachfragewerte eingestellt ist und der gleichmäßige Verlauf (welcher in 3,5 Monaten von 12 Monaten vorkommt) eher eine Ausnahme darstellt.
+
+\subsection{Modell 5 – eigener Modellansatz}
+Ein erster Versuch war es, mehrere Modelle für verschiedene Zeiträume zu erstellen. Hier stellte sich heraus das aufgrund der geringeren Datensätze pro Modell, die Genauigkeit geringer war. 
+
+Der zweite Versuch war: 2 Modelle in Abhängigkeit von einer „Trenntemperatur“ (zum Beispiel ab 20°C Modell 2 und darunter Modell 1 zu verwenden) zu erstellen. Auch hier war das Bestimmtheitsmaß nicht besser.
+
+Als letzter Versuch wurden die alten Modelle 2 und 3 kombiniert. \\
+Aus Modell 3 kann man gut erkennen, dass die Nachfragewerte der vorherigen Stunde eine große Beeinflussung, für die richtige Berechnungen der aktuellen Nachfrage, sind.
+In Kombination mit Modell 2 ergibt sich folgendes Modell:
+
+\begin{table}[!h]
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline 
+Koeffizient & Estimate & tStat \\ 
+\hline 
+$\beta_0$ & 2.235 & 18.296 \\ 
+\hline 
+$\beta_1$ & -0.102 & -16.966 \\ 
+\hline 
+$\beta_2$ & 0.9112 & 189.594 \\ 
+\hline 
+$\beta_3$ & 0.0524 & 2.382 \\ 
+\hline 
+$\beta_4$ & 0.0033 & 1.425 \\ 
+\hline 
+$\beta_5$ & -0.0003158 & -4.724 \\ 
+\hline 
+\end{tabular} 
+\end{center}
+\caption{Modell 5 - Koeffizienten}
+\label{taba}
+\end{table}
+
+Dieses Modell erreicht ein leicht besseres Bestimmtheitsmaß von $R^2$ = 0.978
+
+Nachfolgend das Scatterplot zur Veranschaulichung des Modells.
+
+\myfig{Aufgabe_1.1_5.png}
+{width=0.95\textwidth}
+{Scatterplot - Modell 5}
+{Scatterplot - Modell 5}
+{scatter5}
+{!htb}
+
+Um die Genauigkeit weiter zu erhöhen könnte man noch mehr historische Werte (zusätzliche historische Daten aus vergangenen Jahren) verwenden.
+\newpage
+\section{Modellierung des Strompreises mittels linearer Regression}
+In dieser Aufgabe wird der Strompreis anhand linearer Regression modelliert. Der Strompreis wird als Regressand (abhängige Variable) und alle andere Variablen werden als Regressoren (unabhängige Variable) gennant. Für alle Werte und Graphiken wurde MATLAB verwendet. Der Programmcode befindet sich in der angehängten .zip Datei.
+
+\subsection{Erstellung Strompreismodell}
+\paragraph{a) Modellansätze}\mbox{} \newline\newline
+Die drei mathematischen Modelle, die wir erstellt haben, sind: ein lineares, ein logarithmisches und ein LAG Modell. \\
+
+Bei dem linearen Modell hängt der Preis $p_t$ linear von der Nachfrage $N_t$, Wind $W_t$ und Photovoltaik $PV_t$ ab. Die Koeffizienten sind zu ermitteln.
+
+\begin{equation}
+p_t = \beta_0 + \beta_1 \cdot N_t + \beta_2 \cdot W_t + \beta_3 \cdot PV_t
+\end{equation}
+
+Bei dem logarithmischen Modell hängt der Preis $p_t$ multiplikativ von der Nachfrage $N_t$ und der Erneuerbaren $E_t$ ab. Um auf ein linearer Zusammenhang zu kommen, wird die Gleichung (2) logarithmiert. Somit kann man dieses Modell auch als linear betrachten, was die Analyse des Modells erleichtert.
+\begin{align}
+p_t &= \beta_0 \cdot \dfrac{N_t^{\beta_1}}{E_t^{-\beta_2}} = \beta_0 \cdot N_t^{\beta_1} \cdot E_t^{\beta_2}\implies\\
+\log{p_t} &= \log{\beta_0} + \beta_1 \cdot \log{N_t} + \beta_2 \cdot \log{E_t}
+\end{align}
+
+Bei dem LAG Modell hängt der Preis $p_t$, wie beim linearen Modell, von der Nachfrage, Wind und Photovoltaik ab. Zusätzlich hängt der Preis noch von einem verzögerten Preis Term ab, der uns der Wert der vorigen Stunde abbildet. 
+\begin{equation}
+p_t = \beta_0 + \beta_1 \cdot N_t + \beta_2 \cdot W_t + \beta_3 \cdot PV_t + \beta_4 \cdot p_{t-1}
+\end{equation}
 
 
-\section{1.1 - Modellierung der Wärmenachfrage eines Fernwärmenetzes mittels linearer Regression}
+\newpage
+\paragraph{b) Regression} \mbox{} \newline\newline
+In diesem Unterpunkt findet man die berechneten Werte wie die t-Statistik, die adjustierte Bestimmtheitsmaß $R^2$ und die Koeffizientenwerte. \\
 
-\section{1.2 - Modellierung des Strompreises mittels linearer Regression}
+Mit $\beta_0$ wird die Pauschale angegeben, $\beta_1$ ist positiv, da sie den Verbrauch darstellt d.h. die Last und das Preis korrelieren positiv. Die Koeffizienten von erneuerbaren Energie sind wie erwartet negativ, da Sie genau das Gegenteil vom Last darstellen.
 
-\section{1.3 - Modellansatz für den Kältebedarf eines Gebäudes}
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+ & $\beta_0$ & $\beta_1$ & $\beta_2$ & $\beta_3$ \\ 
+\hline 
+Koeffizientenwerte & -17.896 & 0.0015 & -0.00097 & -0.00082 \\ 
+\hline 
+t-Statistik & -38.92 & 150.81 & -52.36 & -45.406 \\ 
+\hline 
+$R^{2}$ & \multicolumn{4}{c|}{0.743} \\ 
+\hline 
+\end{tabular} 
+\end{center}
+\caption{Lineares Modell - Werte}
+\label{lin1}
+\end{table}
 
+In dem zweiten Modell wurden alle logarithmisch betrachtet, da sie vorher linearisiert wurden. Das Intercept $\beta_0$ ist zurückzutransformieren d.h. man berechnet die Umkehrfunktion von natürlichem Logarithmus $exp(\beta_0)$.
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline 
+ & $\beta_0$ & $\beta_1$ & $\beta_2$ \\ 
+\hline 
+Koeffizientenwerte & -18.947 & 2.25 & -0.25 \\ 
+\hline 
+t-Statistik & -40.34 & 51.12 & -23.99 \\ 
+\hline 
+$R^2$ & \multicolumn{3}{c|}{0.238} \\ 
+\hline 
+\end{tabular} 
+\end{center}
+\caption{Logarithmisches Modell - Werte}
+\label{log1}
+\end{table}
+
+Im dritten Modell wird noch der verzögerter Preis Term mitberücksichtigt, was uns die höhere Genauigkeit ermöglicht, da die benachbarten Terme höhere Wahrscheinlichkeit haben um zu korrelieren. Der Beweis dafür ist die adjustierte Bestimmtheitsmaß von 0.894.
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline 
+ & $\beta_0$ & $\beta_1$ & $\beta_2$ & $\beta_3$ & $\beta_4$ \\ 
+\hline 
+Koeffizientenwerte & -8.26 & 0.00043 & -0.00036 & -0.00037 & 0.67 \\ 
+\hline 
+t-Statistik & -26.79 & 52.97 & -27.33 & -30.14 & 111.48 \\ 
+\hline 
+$R^{2}$ & \multicolumn{5}{c|}{0.894} \\ 
+\hline 
+\end{tabular} 
+\end{center}
+\caption{LAG Modell - Werte}
+\label{lag1}
+\end{table}
+
+
+%\newpage %\clearpage
+\subsection{Interpretation der Ergebnisse}
+
+\paragraph{a) Grafiken für die Modelle} \mbox{} \newline\newline
+Aus der Abbildung des linearen Modells ist ersichtlich, dass es einige Ausreiser (Outliers) gibt. Das sind meistens die Stunden die ein sehr hoher Spotpreis erreicht haben. Hingegen, mit der zunehmenden Erzeugung von der Erneuerbaren Energien beginnt in der Merit Order Kurve mit der Grenzkosten von 0 und somit verringert sich der Preis.
+
+\myfig{linear.eps}
+{width=0.7\linewidth}
+{Lineares Modell - MATLAB}
+{Lineares Modell - MATLAB}
+{fig:lingraph}
+{!htb}
+
+Das logarithmische Modell hat die kleinste adjustierte Bestimmtheitsmaß von $R^2 = 0.238$. Trotzdem bildet das logarithmische Modell die tatsächlichen werte besser ab, da die anderen maßgebenden Werte besser übereinstimmen.
+
+\myfig{logarithm.eps}
+{width=0.7\linewidth}
+{Logarithmisches Modell - MATLAB}
+{Lineares Modell - MATLAB}
+{fig:loggraph}
+{!htb}
+
+
+
+Mit dem LAG Modell kann das Verhältnis am plausibelsten beschrieben und dargestellt werden. Mit der Einbeziehung der Werten der vorigen Stunde bekommt man die möglichst gute Korrelation des Preises und der Last, da die Nachbarperiode mitberücksichtigt wird. Die adjustierte Bestimmtheitsmaß von $R^2 = 0.894$ bestätigt unsere Überlegungen.
+
+\myfig{lag.eps}
+{width=0.7\linewidth}
+{LAG Modell - MATLAB}
+{LAG Modell - MATLAB}
+{fig:laggraph}
+{!htb}
+
+\newpage
+\paragraph{b) Zusammenhang zwischen Erneuerbaren und dem Strompreis}
+
+Da der Preis und die Einspeisung erneuerbaren Energien negativ korrelieren, umso höher die Einspeisung der erneuerbaren Energien desto kleiner wird der Spotpreis. Das heißt, die Merit Order Kurve wird um erneuerbaren Anteil nach rechts verschoben. Das gleiche Effekt wird erzielt wenn man das Verhältnis von Erneuerbaren zu Netzlast $\dfrac{E_t}{N_t}$ betrachtet. Je Größer $E_t$ im Vergleich zu $N_t$ wird, verringert sich der Preis. Die Koeffizienten im Modell, mit denen die erneuerbaren Energien dargestellt sind, werden immer mit dem negativen Vorzeichen ermittelt.
+
+\begin{equation}
+p_t \backsim -\beta_{EE}
+\end{equation}
+
+
+\newpage
+\section{Modellansatz für den Kältebedarf eines Gebäudes}
+In dieser Aufgabe sollte ein Modell aufgestellt werden, welches den Kühlbedarf eines Bürogebäudes mittels Regressionsanalyse abschätzt.
+
+\paragraph{a) Welche Daten werden Sie ermitteln/erfragen?}
+\mbox{}\newline \newline
+\textbf{Umwelt:} Zu den Umweltparametern zähle ich in diesem Modell die aktuellle  Sonneneinstrahlung, Temperatur und Luftfeuchtigkeit. Diese Parameter fallen in den nicht beeinflussbaren Bereich, da diese von der Natur gegeben sind.
+
+\textbf{Gebäude:} Unter diesen Parametern versteht man den Standort des Gebäudes (Orientierung, Höhenlage, ...), dessen Oberfläche (Glas/Wand Verhältnis, Isolation, ...). Diese Parameter zählen zu den beeinflussbaren Parameter, jedoch lediglich einmalig beim Bau bzw. bei Sanierungen/Umbauten.
+
+\textbf{Mitarbeiter:} Hierunter fallen die Anzahl der Personen im Bürogebäude pro zu kühlender Fläche.  
+
+\textbf{Last:} Zu den Lastparametern gehören jene Wärmelieferanten die abhängig von der jeweiligen Benutzung sind. Dazu gehören: Beleuchtung, Computer, Server, usw.. 
+
+\paragraph{b) Überlegen Sie sich eine geeigmete mathematische Formulierung Ihres Modells. Wie sieht diese aus?}
+\mbox{}\newline \newline
+In diesem Beispiel wurde ein lineares Modell zur Ermittlung des Kühlbedarfs eines Bürogebäudes gewählt. Dies weist hier den Vorteil auf, dass es leicht ersichtlich ist welche Komponenten die Wärmemenge im Gebäude erhöhen und welche senken.
+
+\begin{equation}
+K\ddot{u}hlbedarf = \beta_0 + \beta_1 \cdot Umwelt + \beta_2 \cdot Geb\ddot{a}ude + \beta_3 \cdot Mitarbeiter + \beta_4 \cdot Last 
+\end{equation}
+
+\paragraph{c) Wie schätzen Sie die Vorzeichen und die Signifikanz der einzelnen Koeffizienten ein? Verwenden Sie Dummy-Variablen? Formulieren Sie Ihre Antworten möglichst allgemein}
+\mbox{}\newline \newline
+Der Koeffizient $\beta_0$ steht für den Grundkühlbedarf des Gebäudes. Dieser Wert wird ein positives Vorzeichen haben und weist eine hohe Signifikanz auf.
+
+Der Koeffizient $\beta_1$ hat ein positives Vorzeichen und dadurch erhöht uns die Sonneneinstrahlung, Temperatur und Luftfeuchtigkeit den benötigten Kühlbedarf. Die Signifikanz dieses Koeffizienten ist eher hoch.
+
+Der Koeffizient $\beta_2$ weist ein negatives Vorzeichen auf. Das bedeutet, dass durch eine gute Wahl des Standorts bzw. der Oberfläche der Kühlbedarf reduziert werden kann. Genauso wir bereits der vorherige Koeffizient, weist auch dieser wieder eine höhere Signifikanz auf.
+
+Der Koeffizient $\beta_3$ hat ein positives Vorzeichen und stellt die Zunahme des Kühlbedarfs durch eine höhere Personendichte im Bürogebäude dar. Dieser Koeffizient wird eine ehere gerinere Signifikanz aufweisen.
+
+Der Koeffizient $\beta_4$ hat ein positives Vorzeichen und spiegelt die Zunahme des Kühlbedarfs aufgrund der inneren Belastung. Dieser Wert wird eine niedrigere Signifikanz aufweisen als die restlichen Koeffizienten.
 
 
 \newpage
@@ -57,8 +549,7 @@
 \newpage
 %auskommentieren wenn notwendig:
 
-%\listoffigures   
-%\listoftables
+\listoffigures   
+\listoftables
 %\printbibliography
-
 \end{document}
