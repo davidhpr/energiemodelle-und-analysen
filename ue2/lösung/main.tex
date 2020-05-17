@@ -1,0 +1,729 @@
+\documentclass{eegreport}
+
+%% my usepackages
+\usepackage{ltablex}
+\usepackage[official]{eurosym}
+\usepackage{listings}
+\usepackage{amsmath, amsthm}
+\usepackage{amsmath}
+%\usepackage{makecell}
+%\usepackage{pgfplots} gemeinsam mit matlab2tikz verwenden
+	
+% external files and paths
+\addbibresource{Literature.bib} %% remove, if using BibTeX instead of biblatex
+\graphicspath{{graphics/}}
+
+%% general metadata:
+\newcommand{\mytitle}{VU Energiemodelle und Analysen (373.011)}  %% also used for PDF metadata (hyperref)
+\newcommand{\mysubject}{Protokoll Übung 2}  %% also used for PDF metadata (hyperref)
+\newcommand{\myauthors}{Ivan Grubesic (01425089), Michael Kern (0935115), David Pribic (01428675), Ermin Sefer (01525021)}  %% also used for PDF metadata (hyperref)
+\newcommand{\mysupervisor}{Ao.Univ.Prof. Univ.Prof. Dipl.-Ing. Dr.techn. Haas, Privatdoz. Dipl.-Ing. Dr.techn. Auer, Univ.Ass. Dipl.-Ing. Perger}  %% also used for PDF metadata (hyperref)
+\newcommand{\mydate}{April 2020}  %% also used for PDF metadata (hyperref)
+
+\newcommand{\mykeywords}{KEYWORDS}  %% also used for PDF metadata (hyperref)
+
+%% this information is used only for generating the title page:
+\newcommand{\myuniversity}{TU Wien} %% your university/school
+\newcommand{\myinstitute}{Institut für Energiesysteme und elektrische Antriebe} %% affiliation
+\newcommand{\myworkinggroup}{Energy Economics Group} %% working group
+\newcommand{\mytown}{Wien} %% your home town
+\newcommand{\mymonth}{Mai} %% month you are handing in
+\newcommand{\myyear}{2020} %% year you are handing in
+
+%% additional information for generic_documentation title page
+\allowdisplaybreaks
+
+\renewcommand{\thesubsubsection}{\alph{subsubsection}}
+\begin{document}
+
+\setcounter{section}{2}
+
+\mytitlepage
+\pagenumbering{Roman} 
+\tableofcontents 
+\pagenumbering{arabic} 
+
+\newpage
+
+\subsection{Gewinnmaximierung einer Raffinerie}
+Eine Raffinerie stellt 2 Produkte her: Benzin und Diesel. Dieser Raffinerie stehen folgende Ressourcen zur Verfügung:
+
+\begin{enumerate}
+\item Arbeitsdauer der Maschinen: max. 1200h
+\item Menge an Rohöl: max. 3000 Mengeneinheiten (ME)
+\item Arbeitsdauer der Arbeiter: 125h
+\end{enumerate}
+
+Zur Herstellung der jeweiligen Produkte sind folgende Ressource erforderlich:
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline 
+ & Benzin & Diesel \\ 
+\hline 
+Arbeitsdauer Maschine & 3h & 2h \\ 
+\hline 
+Menge an Rohöl & 5 ME & 10 ME \\ 
+\hline 
+Arbeitsdauer der Arbeiter & 0h & 0.5h \\ 
+\hline 
+\end{tabular} 
+\end{center}
+\caption{Ressourcen je Produkt pro Mengeneinheit (ME)}
+\label{Ressourcen_Produkt}
+\end{table}
+
+Die damit erzielbaren Gewinne in Geldeinheiten (GE) sind:
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline 
+ & Benzin & Diesel \\ 
+\hline 
+Gewinn & 3 GE & 2 GE \\ 
+\hline 
+\end{tabular} 
+\end{center}
+\caption{Gewinn je Produkt pro Mengeneinheit (ME)}
+\label{Gewinn_Produkt}
+\end{table}
+
+\subsubsection{Optimierungsmodell}
+
+Als ersten Schritt stellen wir die Zielfunktion auf. Das ist jene Größe, in unserem Fall der Gewinn, den es hier zu maximieren gilt. Hierbei steht $z$ für den erzielten Gewinn, $x_1$ für die Menge an hergestellten Benzin und $x_2$ für die Menge an hergestellten Diesel.
+
+\begin{equation}
+\max_{x_1, x_2}\ z = 3 \cdot x_1 + 4 \cdot x_2
+\end{equation}
+
+Die Nebenbedingungen für das Optimierungsmodell lassen sich aus den zur Verfügung stehenden Ressourcen (Maschine, Rohöl, Arbeiter) der Raffinerie und dem Ressourcen je Produkt \ref{Ressourcen_Produkt} aufstellen.
+
+\begin{equation}
+3 \cdot x_1 + 2 \cdot x_2 \leq 1200
+\end{equation}
+
+\begin{equation}
+5 \cdot x_1 + 10 \cdot x_2 \leq 3000
+\end{equation}
+
+\begin{equation}
+0 \cdot x_1 + 0.5 \cdot x_2 = 125
+\label{Nebenbedingung_Arbeiter}
+\end{equation}
+
+Nun ergibt sich gleich aus Gleichung \ref{Nebenbedingung_Arbeiter} sehr einfach die zu herstellende Menge an Diesel:
+
+\begin{equation}
+x_2 = 250
+\end{equation}
+
+Daraus ergibt sich für die beiden anderen Nebenbedingungen:
+
+\begin{equation}
+3 \cdot x_1 + 500 \leq 1200
+\end{equation}
+
+\begin{equation}
+5 \cdot x_1 + 2500 \leq 3000
+\end{equation}
+
+Woraus sich folgende Bedingungen für die zu herstellende Menge an Benzin ergeben:
+
+\begin{equation}
+x_1 \leq 233,33
+\label{Nebenbedingung_Benzin_1}
+\end{equation}
+
+\begin{equation}
+x_1 \leq 100
+\label{Nebenbedinung_Benzin_2}
+\end{equation}
+
+Da Gleichung \ref{Nebenbedinung_Benzin_2} eine stärkere Einschränkung ist und dadurch Gleichung  \ref{Nebenbedingung_Benzin_1} bereits erfüllt wird gilt letzendlich die Bedingung \ref{Nebenbedinung_Benzin_2}.\\
+
+Daraus ergibt sich ein maximal erzielbarer Gewinn in Geldeinheiten von:
+
+\begin{equation}
+z = 3 \cdot x_1 + 4 \cdot x_2 = 3 \cdot 100 + 4 \cdot 250 = 1300 
+\end{equation}
+
+\newpage
+\subsubsection{Lösung mittels Simplex-Algorithmus}
+
+Um das Optimierunsproblem mit Hilfe des Simplex-Algorithmus lösen müssen die Simplex-Tableaus angeschrieben werden. Das sieht wie folgt aus:
+
+\myfig{Simplex_1.png}
+       {width=1.0\textwidth}
+       {Simplex-Tableau 1}
+       {Simplex-Tableau 1}
+       {Simplex-Tableau 1}
+       {h!}
+       
+Anschließend suchen wir in der letzten Zeile (cT) den größten Wert. Jene Spalte des Wertes ist die sogennante Pivot-Spalte (grün markiert).
+
+\myfig{Simplex_2.png}
+       {width=1.0\textwidth}
+       {Simplex-Tableau 2}
+       {Simplex-Tableau 2}
+       {Simplex-Tableau 2}
+       {h!}       
+       
+Anschließend suchen wir die Pivot-Zeile. Das ist jene Zeile mit dem niedrigsten Quotienten aus dem Wert b und dem dazugehörigen Wert aus der Pivot-Spalte. In diesem Fall ist die Zeile 3 die Pivot-Zeile (grün markiert). Das gemeinsame Element von Pivot-Spalte und Pivot-Zeile ist das sogennante Pivot-Element (rot markiert).
+
+\myfig{Simplex_3.png}
+       {width=1.0\textwidth}
+       {Simplex-Tableau 3}
+       {Simplex-Tableau 3}
+       {Simplex-Tableau 3}
+       {h!}      
+       
+Nun wird die Pivot-Zeile normiert. Dazu dividiert man diese Zeile durch das Pivot-Element. In diesem Fall dividiert man durch $\dfrac{1}{2}$.
+
+\newpage
+
+\myfig{Simplex_4.png}
+       {width=1.0\textwidth}
+       {Simplex-Tableau 4}
+       {Simplex-Tableau 4}
+       {Simplex-Tableau 4}
+       {h!}    
+       
+Anschließend gilt es die anderen Einträge der Pivot-Spalte auf 0 zu transformieren. Dies gelingt uns indem wir die Pivot-Zeile um ein Viefaches von der anderen Zeile abziehen.
+
+\myfig{Simplex_5.png}
+       {width=1.0\textwidth}
+       {Simplex-Tableau 5}
+       {Simplex-Tableau 5}
+       {Simplex-Tableau 5}
+       {h!}     
+       
+Da noch nicht alle Koeffizienten der Zielfunktion Null sind (die ersten beiden Koeffizienten von cT) muss dieser Vorgang wiederholt werden. Im folgenden sind nur die Schritte ohne textueller Beschreibung:
+
+\myfig{Simplex_6.png}
+       {width=1.0\textwidth}
+       {Simplex-Tableau 6}
+       {Simplex-Tableau 6}
+       {Simplex-Tableau 6}
+       {h!} 
+       
+\textbf{Hinweis:} Falls bei der Bestimmung der Pivot-Zeile ein Koeffizient der Pivot-Spalte 0 ist wird dieser bei der Division nicht berücksichtig!       
+    
+\myfig{Simplex_7.png}
+       {width=1.0\textwidth}
+       {Simplex-Tableau 7}
+       {Simplex-Tableau 7}
+       {Simplex-Tableau 7}
+       {h!}        
+ 
+ \myfig{Simplex_8.png}
+       {width=1.0\textwidth}
+       {Simplex-Tableau 8}
+       {Simplex-Tableau 8}
+       {Simplex-Tableau 8}
+       {h!}             
+
+\myfig{Simplex_9.png}
+       {width=1.0\textwidth}
+       {Simplex-Tableau 9}
+       {Simplex-Tableau 9}
+       {Simplex-Tableau 9}
+       {h!} 
+
+\newpage       
+Da nun, die beiden Koeffizienten in der Zeile cT nicht positiv sind ist der Vorgang abgeschlossen und wir können in der folgenden Abbildung unsere Ergebnisse auslesen.       
+
+\myfig{Simplex_10.png}
+       {width=1.0\textwidth}
+       {Simplex-Tableau 10}
+       {Simplex-Tableau 10}
+       {Simplex-Tableau 10}
+       {h!} 
+       
+Wie auch bereits im vorherigen Abschnitt, ist die optimale Lösung $x_1 = 100$ und $x_2 = 250$! Das rot markierte Feld gibt uns hierbei den negativen Wert der Zielfunktion an. Die Ergebnisse stimmen mit denen aus 2.1)a) überein!       
+
+\newpage
+\subsection{Optimierung eines Kraftwerkparks}
+
+Gegeben ist ein Wärmesystem, wobei die Nachfrage bei einer gewissen Stunde 125MW beträgt. Zur Deckung der
+Nachfrage stehen folgende Kraftwerke zur Verfügung:
+
+\begin{enumerate}
+\item Steinkohle mit 30MW
+\item Gasturbine mit 60MW
+\item Biomasse mit 40MW
+\end{enumerate}
+
+Weiter Parameter der Kraftwerke sind:
+ 
+\begin{table}[h]
+\begin{center}
+
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Technologie & Var.Wartungskosten[€/MWh$_{therm}$] & $\eta$ & Emissionsfaktor[t$_{CO2}$/MWh$_{prim}$] \\ 
+\hline 
+Steinkohle & 2.5 & 0.36 & 0.34 \\ 
+\hline 
+Gasturbine & 1.7 & 0.46 & 0.2  \\ 
+\hline 
+Biomasse & 2.9 & 0.80 & 0 \\ 
+\hline
+ 
+\end{tabular} 
+\end{center}
+\caption{Parameter}
+\label{modell1koeff}
+\end{table}
+
+
+Die Brennstoffkosten von Steinkohle betragen 8[€/MWh$_{prim}$],die von Gas 30[€/MWh$_{prim}$] und die von Biomasse 60 [€/MWh$_{prim}$]. 
+
+
+
+\subsubsection{Optimierungsmodell}
+
+\paragraph{i): Formulierung des kostenminimalen Optimierungsmodells}\mbox{}\\
+
+Zunächst wird die Zielfunktion formuliert:
+
+
+\begin{align}
+\min_{x}\ z &= (K_{v,Ko} + \frac{K_{Brenn,Ko}}{\eta_{Ko}}) \cdot L_{Ko} + (K_{v,Gas} + \frac{K_{Bren.,Gas}}{\eta_{Gas}}) \cdot L_{Gas} + (K_{v,Bio} + \frac{K_{Brenn,Bio}}{\eta_{Bio}}) \cdot L_{Bio}
+\end{align}
+
+%$c=\begin{bmatrix}
+%1 \\ 
+%2 \\ 
+%3
+%\end{bmatrix}$
+
+Somit entsprechen:\\
+
+
+$c^T=\begin{bmatrix}
+(K_{v,Ko} + \frac{K_{Brenn,Ko}}{\eta_{Ko}}) & (K_{v,Gas} + \frac{K_{Brenn,Gas}}{\eta_{Gas}}) & (K_{v,Bio} + \frac{K_{Brenn,Bio}}{\eta_{Bio}})
+\end{bmatrix}$= $\begin{bmatrix} 24.722 & 66.917 & 77.9 \end{bmatrix} $
+
+und $x=\begin{bmatrix}
+L_{Kohle} \\ 
+L_{Gas} \\ 
+L_{Bio}
+\end{bmatrix}$ 
+den Vektoren der allgemeinen Formulierung.\\
+Um dieses Minimierungsproblem mittels Tabular-Methode zu lösen, wandeln wir die Zielfunktion mittels
+Dualitätssatz:
+
+
+\begin{equation}
+\max_{x}\ f(x) = \min_{x}\ -f(x) 
+\end{equation}
+
+in ein Maximierungsproblem um.\\
+Zusammen mit den Nebenbediengungen:
+
+\begin{equation}
+L_{Kohle} \leq 30MW
+\end{equation}
+
+\begin{equation}
+L_{Gasturbine} \leq 60MW
+\end{equation}
+
+\begin{equation}
+L_{Biomasse} \leq 40MW
+\end{equation}
+
+\begin{equation}
+L_{Kohle} + L_{Gasturbine} + L_{Biomasse} \geq 125MW
+\end{equation}
+
+und der Bedingung dass alle Basisvariablen positive Werte annehmen müssen:
+\begin{equation}
+L_{Kohle},L_{Gasturbine},L_{Biomasse} \geq 0MW
+\end{equation}
+
+kann das lineare Optimierungsmodell formuliert werden.
+
+Aus den Nebenbedingungen lässt sich die Matrix $A=\begin{bmatrix}
+1 & 0 & 0 \\ 
+0 & 1 & 0 \\ 
+0 & 0 & 1 \\ 
+1 & 1 & 1
+\end{bmatrix}$ und $b=\begin{bmatrix}
+30 \\ 
+60 \\ 
+40 \\ 
+125
+\end{bmatrix}$ direkt ablesen.
+
+
+
+
+\paragraph{ii): Formulierung des emissionsminimalen Optimierungsmodells}\mbox{}\\
+
+
+Wiederrum zunächst die Formulierung der Zielfunktion: 
+
+
+
+\begin{align}
+\min_{x}\ z = E_{Kohle} \cdot \frac{L_{Kohle}}{\eta_{Ko}} + E_{Gas} \cdot \frac{L_{Gas}}{\eta_{Gas}}
+\end{align}
+
+Da das Biomasse-Kraftwerk einen Emissionsfaktor von 0 hat verschwindet die Abhängigkeit in der Zielfunktion.
+
+Somit entsprechen $c^T=\begin{bmatrix}
+\frac{E_{Kohle}}{\eta_{Ko}} & \frac{E_{Gas}}{\eta_{Gas}}
+\end{bmatrix}$ =
+$\begin{bmatrix}
+0.944 & 0.435
+\end{bmatrix}$ 
+ und $x=\begin{bmatrix}
+ L_{Kohle} \\ 
+ L_{Gas}
+ \end{bmatrix}$
+
+den Vektoren der allgemeinen Formulierung.\\
+
+Um dieses Minimierungsproblem mittels Tabular-Methode zu lösen, wandeln wir die Zielfunktion mittels
+Dualitätssatz:
+
+\begin{equation}
+\max_{x}\ f(x) = \min_{x}\ -f(x) 
+\end{equation}
+
+
+in ein Maximierungsproblem um.
+
+
+Zusammen mit den Nebenbediengungen:
+
+\begin{equation}
+L_{Kohle} \leq 30MW
+\end{equation}
+
+\begin{equation}
+L_{Gasturbine} \leq 60MW
+\end{equation}
+
+\begin{equation}
+L_{Biomasse} \leq 40MW
+\end{equation}
+
+\begin{equation}
+L_{Kohle} + L_{Gasturbine} + L_{Biomasse} \geq 125MW
+\end{equation}
+
+und der Bedingung dass alle Basisvariablen positive Werte annehmen müssen:
+\begin{equation}
+L_{Kohle},L_{Gasturbine},L_{Biomasse} \geq 0MW
+\end{equation}
+
+
+kann das lineare Optimierungsmodell formuliert werden.
+
+Aus den Nebenbedingungen lässt sich die Matrix $A=\begin{bmatrix}
+1 & 0 & 0 \\ 
+0 & 1 & 0 \\ 
+0 & 0 & 1 \\ 
+1 & 1 & 1
+\end{bmatrix}$ und $b=\begin{bmatrix}
+30 \\ 
+60 \\ 
+40 \\ 
+125
+\end{bmatrix}$ direkt ablesen.
+
+
+
+
+
+
+
+%
+% \[
+%    \vec{c}=\left(\begin{array}{c} (K_{var,Kohle} + \frac{K_{Brennstoff,Kohle}}{\eta_{Kohle}}) \\ (K_{var,Gas} + \frac{K_{Brennstoff,Gas}}{\eta_{Gas}}) \\ (K_{var,Bio} + \frac{K_{Brennstoff,Bio}}{\eta_{Bio}}) \end{array}\right)
+%  \]
+
+%% \qquad
+%%    D(\varphi)=\left(\begin{array}{rr} \cos\varphi & -\sin\varphi \\
+%%      \sin\varphi & \cos\varphi\end{array}\right) .
+
+
+
+\subsubsection{Lösung mittels 2-Phasen-Simplexalgorithmus}
+
+
+Nun wird das lineare Optimierungsproblems mittels Simplex-Methode gelöst.
+
+
+
+Hierfür werden die Nebenbedingungen um den Schlupfvektor
+$u=\begin{bmatrix}
+u_1 \\ 
+u_2 \\ 
+u_3 \\ 
+u_4
+
+\end{bmatrix}$
+
+erweitert
+
+Daraus ergeben sich folgende Nebenbedingungen:
+
+
+\begin{equation}
+L_{Kohle} + u_1 =  30
+\end{equation}
+
+\begin{equation}
+L_{Gasturbine}+ u_2 = 60
+\end{equation}
+
+\begin{equation}
+L_{Biomasse} + u_3 = 40
+\end{equation}
+
+\begin{equation}
+L_{Kohle} + L_{Gasturbine} + L_{Biomasse} - u_4 = 125
+\end{equation}
+
+
+\myfig{ersteslatex.png}
+       {width=1.0\textwidth}
+       {Start-Simplex-Tableau}
+       {Start-Simplex-Tableau}
+       {Start-Simplex-Tableau}
+       {h!}
+
+
+Nun sehen wir dass in der Zielfunktionszeile lediglich negative Werte vorkommen. Dies stellt eine nicht zulässige Basislösung dar. Durch Addition einer Hilfsvariablen $a_i$ zu jeder Zeile, in der eine Schlupfvariable subtrahiert wird erhalten wir eine zulässige Basislösung. Die neue Zielfunktion besteht aus der Summe aller $a_i$. 
+\newpage
+
+\myfig{zweiteslatex.png}
+       {width=1.0\textwidth}
+       {Neue Zielfunktion}
+       {Neue Zielfunktion}
+       {Neue Zielfunktion}
+       {h!}
+       
+       
+       
+Durch Addition aller Zeilen, die eine Hilfsvariable enthalten, zur Zielfunktionszeile
+werden alle Einträge der Hilfsvariablen $a_i$
+in der Zielfunktionszeile auf Null
+gebracht.In diesem Fall wird die letzte Zeile zur Zielfunktionszeile addiert.
+   
+\myfig{dritteslatex.png}
+       {width=1.0\textwidth}
+       {Nullsetzen der $a_i$}
+       {Nullsetzen der $a_i$}
+       {Nullsetzen der $a_i$}
+       {h!}      
+       
+Als nächstes wird die Hilfszielfunktion mit dem Simplex-Standardverfahren minimiert.
+
+Zur Auswahl der Pivotspalte suchen wir in der Zielfunktionszeile den höchsten Wert, wofür die ersten drei Spalten in Frage
+kommen. Die Pivotzeile ist diejenige, in der sich der kleinste Wert der Division von b mit der Pivot-Spalte befindet.    
+       
+\myfig{vierteslatex.png}
+       {width=1.0\textwidth}
+       {Auswahl der Pivotspalte-und-zeile}
+       {Auswahl der Pivotspalte-und-zeile}
+       {Auswahl der Pivotspalte-und-zeile}
+       {h!}     
+       
+Da das Pivotelement bereits normiert ist müssen nur noch die anderen Elemente der Pivotspalte durch Elimination auf null gebracht werden.       
+       
+      
+       
+\myfig{fünfteslatex.png}
+       {width=1.0\textwidth}
+       {Nullsetzen der restlichen Elemente}
+       {Nullsetzen der restlichen Elemente}
+       {Nullsetzen der restlichen Elemente}
+       {h!}          
+       
+       
+Für die beiden anderen Spalten erfolgt die Vorgehensweise analog.
+       
+       
+\myfig{sechsteslatex.png}
+       {width=1.0\textwidth}
+       {Auswahl der Pivotspalte-und-zeile}
+       {Auswahl der Pivotspalte-und-zeile}
+       {Auswahl der Pivotspalte-und-zeile}
+       {h!}          
+
+
+
+
+       
+\myfig{siebteslatex.png}
+       {width=1.0\textwidth}
+       {Nullsetzen der restlichen Elemente}
+       {Nullsetzen der restlichen Elemente}
+       {Nullsetzen der restlichen Elemente}
+       {h!} 
+
+\newpage
+\myfig{achteslatex.png}
+       {width=1.0\textwidth}
+       {Auswahl der Pivotspalte-und-zeile}
+       {Auswahl der Pivotspalte-und-zeile}
+       {Auswahl der Pivotspalte-und-zeile}
+       {h!} 
+       
+
+\newpage
+\myfig{neunteslatex.png}
+       {width=1.0\textwidth}
+       {Nullsetzen der restlichen Elemente}
+       {Nullsetzen der restlichen Elemente}
+       {Nullsetzen der restlichen Elemente}
+       {h!} 
+
+
+
+
+
+
+
+
+
+Nachdem die Hilfszielfunktion null erreicht hat, ist die Hilfsvariable $a_1$ keine Basisvariable mehr und wir ersetzen die Hilfszielfunktion durch die originale Zielfunktion.
+
+
+Schlussendlich wird die angepasste Zielfunktion $c^T$’ berechnet. 
+
+
+
+\begin{equation}
+c^{T'} = c^T + 24.722 \cdot Zeile1 + 66.917 \cdot Zeile2 + 77.9 \cdot Zeile4
+\end{equation}
+
+% = c^T + 22.722 \cdot Zeile1 + 66.917 \cdot Zeile2 + 77.9 \cdot Zeile4
+
+\myfig{zehnteslatex.png}
+       {width=1.0\textwidth}
+       {Berechnung der angepassten Zielfunktion}
+       {Berechnung der angepassten Zielfunktion}
+       {Berechnung der angepassten Zielfunktion}
+       {h!} 
+
+
+Aus dieser Tabelle sind nun die einzelnen Leistungen der kostenminimalen Optimierung entnehmbar. Das Steinkohlekraftwerk und das Gasturbinenkraftwerk wird vollastig mit jeweils \textbf{30MW} und \textbf{60MW} betrieben. Das Biomassekraftwerk mit \textbf{35MW}.
+Die Gesamtkosten des Kraftwerkparks ergeben sich zu \textbf{7483.18 EUR/h} für eine Erzeugung von \textbf{125MW.}
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+\newpage
+\subsection{Schadstoffreduzierung eines Kraftwerks}
+\subsubsection{mathematisches Modell}
+Unser mathematisches Modell, welches die Kostenreduziert und gleichzeitig die gewünschten Emissionsreduktionen einhält, sieht wie folgt aus:
+
+\begin{align}
+\min_{\textbf{x}}\ z = \textbf{c}^T \cdot \textbf{x}
+\end{align}
+
+Wobei die Variablen wie folgt definiert sind:
+
+\begin{center}
+\parbox{13cm}{
+$z$ ... die Zielfunktion (die Gesamtkosten in Millionen €)
+
+$\textbf{c}$ ... Gewichtungskonstanten (Kosten pro Maßnahmentyp in Millionen €)
+\begin{center}
+\parbox{9cm}{
+$\textbf{c}^T = \begin{matrix}(8&10&7&6&11&9)\end{matrix}$
+}
+\end{center}
+$\textbf{x}$ ... Entscheidungsvariablen-Vektor (Werte zwischen 0 und 1)
+
+
+\begin{center}
+\parbox{9cm}{
+$x_1$ ... Schornstein Typ 1\\
+$x_2$ ... Schornstein Typ 2\\
+$x_3$ ... Filter Typ 1\\
+$x_4$ ... Filter Typ 2\\
+$x_5$ ... Brennstoff Typ 1\\
+$x_6$ ... Brennstoff Typ 2\\
+}
+\end{center}
+}
+\end{center}
+
+Die Nebenbedingungen sind die Emissionsreduktionsbedingungen (in Tonnen):
+\begin{align}
+\label{Nebenbedinung_StaubRuss}12 \cdot x_1 + 9 \cdot x_2  + 25 \cdot x_3 + 20 \cdot x_4 + 17 \cdot x_5  + 13 \cdot x_6 \geq 60\\
+\label{Nebenbedinung_Schwefeloxide}35 \cdot x_1 + 42 \cdot x_2  + 18 \cdot x_3 + 31 \cdot x_4 + 56 \cdot x_5  + 49 \cdot x_6 \geq 150\\ 
+\label{Nebenbedinung_Kohlenwasserstoffe}37 \cdot x_1 + 53 \cdot x_2  + 28 \cdot x_3 + 24 \cdot x_4 + 29 \cdot x_5  + 20 \cdot x_6 \geq 125
+\end{align}
+
+Wobei sich die Nebenbedingungsgleichung \ref{Nebenbedinung_StaubRuss} auf die Staub und Ruß-, \ref{Nebenbedinung_Schwefeloxide} auf die Schwefeloxid- und \ref{Nebenbedinung_Schwefeloxide} auf die Kohlenwasserstoffe-Emissionsreduktion bezieht.
+\newpage
+\subsubsection{Lösung mittels MATLAB}
+Das Optimierungsproblem wurde mittels MATLAB mit Hilfe von yalmip und als Löser "Gurobi" gelöst.
+
+Anbei findet man die kostenoptimale Umsetzung der verschiedenen Maßnahmen.
+
+\begin{center}
+\parbox{9cm}{
+$x_1$ = 100\%\\
+$x_2$ = 62.27\%\\
+$x_3$ = 34.35\%\\
+$x_4$ = 100.00\%\\
+$x_5$ = 4.76\%\\
+$x_6$ = 100.00\%
+}
+\end{center}
+
+Die daraus resultierenden Optimierungskosten betragen 32.155 Millionen €. 
+
+\subsubsection{Lösung des MILP}
+Da die Maßnahmen nicht zu einem beliebigen Grad umgesetzt werden können, soll nun ein MILP (Mixed Integer Linear Problem) die Realität besser abbilden.
+
+Die folgenden Werte wurden wieder mittels MATLAB berechnet.
+
+\begin{center}
+\parbox{9cm}{
+$x_1$ = 100\%\\
+$x_2$ = 100\%\\
+$x_3$ = 100\%\\
+$x_4$ = 0\%\\
+$x_5$ = 100\%\\
+$x_6$ = 0\%
+}
+\end{center}
+
+Die daraus resultierenden Optimierungskosten betragen 36 Millionen €. 
+
+\subsubsection{Erweiterung des MILP}
+Die zusätzliche entweder/oder-Bedingung wurde in MATLAB berücksichtigt und zu 0 berechnet. 
+
+Wie aus der Tabellenangabe erkennbar, reichen 3 der ursprünglichen 6 Maßnahmen nicht aus um die Emissionsreduktionsbedingungen zu erfüllen.
+\newpage
+\appendix
+
+
+\newpage
+%auskommentieren wenn notwendig:
+
+\listoffigures   
+\listoftables
+%\printbibliography
+
+\end{document}

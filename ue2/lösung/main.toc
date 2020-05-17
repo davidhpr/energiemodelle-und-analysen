@@ -1,0 +1,15 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\babel@toc {ngerman}{}
+\contentsline {subsection}{\numberline {2.1}Gewinnmaximierung einer Raffinerie}{2}{subsection.2.1}%
+\contentsline {subsubsection}{\numberline {a}Optimierungsmodell}{2}{subsubsection.2.1.1}%
+\contentsline {subsubsection}{\numberline {b}Lösung mittels Simplex-Algorithmus}{4}{subsubsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.2}Optimierung eines Kraftwerkparks}{7}{subsection.2.2}%
+\contentsline {subsubsection}{\numberline {a}Optimierungsmodell}{7}{subsubsection.2.2.1}%
+\contentsline {paragraph}{\nonumberline i): Formulierung des kostenminimalen Optimierungsmodells}{7}{section*.2}%
+\contentsline {paragraph}{\nonumberline ii): Formulierung des emissionsminimalen Optimierungsmodells}{8}{section*.3}%
+\contentsline {subsubsection}{\numberline {b}Lösung mittels 2-Phasen-Simplexalgorithmus}{10}{subsubsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.3}Schadstoffreduzierung eines Kraftwerks}{14}{subsection.2.3}%
+\contentsline {subsubsection}{\numberline {a}mathematisches Modell}{14}{subsubsection.2.3.1}%
+\contentsline {subsubsection}{\numberline {b}Lösung mittels MATLAB}{15}{subsubsection.2.3.2}%
+\contentsline {subsubsection}{\numberline {c}Lösung des MILP}{15}{subsubsection.2.3.3}%
+\contentsline {subsubsection}{\numberline {d}Erweiterung des MILP}{15}{subsubsection.2.3.4}%
